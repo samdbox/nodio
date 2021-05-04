@@ -25,7 +25,7 @@ jobs:
 
       - name: Build image
         run: | 
-          docker pull ghcr.io/${{ github.repository }}:latest
+#          docker pull ghcr.io/${{ github.repository }}:latest
           docker build . --tag ghcr.io/${{ github.repository }}:$GITHUB_SHA --cache-from ghcr.io/${{ github.repository }}:latest
 
       - name: Log into registry
