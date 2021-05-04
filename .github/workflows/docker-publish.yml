@@ -2,17 +2,11 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
     branches:
       - master
 
 jobs:
-  # Push image to GitHub Packages.
-  # See also https://docs.docker.com/docker-hub/builds/
   push:
-    # Ensure test job passes before pushing image.
-    # needs: test
-
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
@@ -24,10 +18,14 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build . --tag ghcr.io/${{ github.repository }}:$GITHUB_SHA --cache-from ghcr.io/${{ github.repository }}:latest
+        run: |
+          docker pull ghcr.io/${{ github.repository }}:latest
+          docker build . --tag ghcr.io/${{ github.repository }}:$GITHUB_SHA --cache-from ghcr.io/${{ github.repository }}:latest
+          docker tag ghcr.io/${{ github.repository }}:$GITHUB_SHA ghcr.io/${{ github.repository }}:latest
 
       - name: Log into registry
         run: echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
       - name: Push image
-        run: docker push ghcr.io/${{ github.repository }}:$GITHUB_SHA
+        run: |
+          docker push --all-tags ghcr.io/${{ github.repository }}
