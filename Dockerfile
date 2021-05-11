@@ -4,7 +4,7 @@ FROM node:12-alpine
 # --virtual: bundle packages, remove whole bundle at once, when done
 
 # Installing audiowaveform
-RUN apk --no-cache --virtual build-dependencies add \
+RUN apk add \
     git \
     make \
     cmake \
