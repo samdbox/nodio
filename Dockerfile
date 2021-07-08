@@ -13,6 +13,7 @@ RUN apk add \
     libmad-dev \
     libid3tag-dev \
     libsndfile-dev \
+    boost-program_options \
     gd-dev \
     boost-dev \
     libgd \
@@ -38,13 +39,18 @@ RUN wget https://github.com/xiph/flac/archive/1.3.3.tar.gz \
 
 RUN git clone https://github.com/bbc/audiowaveform.git \
     && cd audiowaveform \
-    && wget https://github.com/google/googletest/archive/release-1.10.0.tar.gz \
-    && tar xzf release-1.10.0.tar.gz \
-    && ln -s googletest-release-1.10.0/googletest googletest \
-    && ln -s googletest-release-1.10.0/googlemock googlemock \
+    && wget https://github.com/google/googletest/archive/release-1.11.0.tar.gz \
+    && tar xzf release-1.11.0.tar.gz \
+    && ln -s googletest-release-1.11.0 googletest \
     && mkdir build \
     && cd build \
     && cmake .. \
     && make \
     && make install \
     && audiowaveform --help
+
+RUN git clone https://github.com/beschulz/wav2json.git \
+    && cd wav2json/build/ \
+    && make all \
+    && mv ../bin/Linux/wav2json /usr/bin/ \
+    && wav2json --help 
