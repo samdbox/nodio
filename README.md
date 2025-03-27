@@ -29,7 +29,7 @@ FROM ghcr.io/samdbox/nodio:latest
 ...
 ```
 
-In NodeJS APP
+In NodeJS
 ```
 import { promisify } from 'util'
 import { exec } from 'child_process'
@@ -47,3 +47,15 @@ export const waveform = () => path =>
 ```
 
 위 명령어는 아래와 같은 값을 얻을 수 있습니다.
+
+```
+{
+  "sample_rate": 44100,
+  "samples_per_pixel": 256,
+  "bits": 8,
+  "length": 32504,
+  "data": [0,0,0 ....]
+}
+```
+
+추출된 `data` 값을 이용하여 D3.js 혹은 관련 라이브러리로 Waveform을 렌더링 할 수 있습니다.
