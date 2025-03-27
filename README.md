@@ -13,3 +13,37 @@
 * nodejs:20-alpine
 * ffmpeg
 * [audiowavefrom](https://github.com/bbc/audiowaveform)
+
+## Usage
+
+Pulling the image
+
+```
+docker pull ghcr.io/samdbox/nodio:latest
+```
+
+In Dockerfile
+
+```
+FROM ghcr.io/samdbox/nodio:latest
+...
+```
+
+In NodeJS APP
+```
+import { promisify } from 'util'
+import { exec } from 'child_process'
+
+const run = promisify(exec)
+
+export const waveform = () => path =>
+  run(`audiowaveform -i ${path} -o ${path}.json -z 256 -b8`)
+    .then(({ stdout, stderr }) => {
+      /* eslint-disable no-console */
+      console.log('stdout:', stdout)
+      console.log('stderr:', stderr)
+      return path
+    })
+```
+
+위 명령어는 아래와 같은 값을 얻을 수 있습니다.
